@@ -28,26 +28,26 @@ function makeGallery(items) {
     .join(' ');
 }
 
-
-gallery.addEventListener('click', modalOpen);
-
+const lightbox = new SimpleLightbox('.gallery a');
 
 //lightbox
+
+/* gallery.addEventListener('click', modalOpen);
 function modalOpen(event) {
     if (!event.target.classList.contains('gallery__image')) {
         return;
     }
     event.preventDefault();
     const image = event.target.getAttribute('data-source')
-    const instance = basicLightbox.create(`<div class = "modal"><img src="${image}" width="800" height="600"></div>`);
+    const instance = new SimpleLightbox('.gallery a').create(`<div class = "modal"><img src="${image}" width="800" height="600"></div>`);
     instance.show();
 
-
+// закрытие через ESC
     document.addEventListener('keyup', modalClose);
-
     function modalClose(event) {
         if (event.key === 'Escape') {
             instance.close();
         }
     }
 }
+ */
