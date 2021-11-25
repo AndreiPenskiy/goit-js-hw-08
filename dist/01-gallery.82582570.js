@@ -2044,7 +2044,10 @@ function makeGallery(items) {
   }).join(' ');
 }
 
-const lightbox = new _simplelightbox.default('.gallery a'); //lightbox
+const lightbox = new _simplelightbox.default('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250
+}); //lightbox
 
 /* gallery.addEventListener('click', modalOpen);
 function modalOpen(event) {
@@ -2093,7 +2096,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55454" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63146" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
