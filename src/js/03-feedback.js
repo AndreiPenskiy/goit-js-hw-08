@@ -2,23 +2,44 @@ import throttle from 'lodash.throttle';
 
 const refs = {
     form: document.querySelector('.feedback-form'),
-    input: document.querySelector('.feedback-form input'),
-    textarea: document.querySelector('.feedback-form textarea')
+    email: document.querySelector("input"),
+    text: document.querySelector("textarea"),
 }
 
 const storage_key = 'feedback-form-state';
 const formData = {};
-
-reloadPage();
-
+refs.form.addEventListener('input', throttle(formInput, 500));
 refs.form.addEventListener('submit', onFormSubmit);
-refs.form.addEventListener('input', throttle(evt => {
-    formData[evt.target.name] = evt.target.value;
-    localStorage.setItem(storage_key, JSON.stringify(formData))
-}, 500)
-)
 
-//сохраняем данные в форме до сабмита
+
+if (localStorage[storage_key]) {
+    const localData = JSON.parse(localStorage[storage_key]);
+    refs.email.value = localData.email;
+    refs.text.value = localData.text;
+}
+
+function formInput() {
+    const formData = new FormData(refs.form);
+
+    formData.forEach((value, name) => {
+        formData[name] = value;
+        localStorage.setItem(storage_key, JSON.stringify(formData));
+    });
+}
+
+function onFormSubmit(event) {
+    event.preventDefault();
+    try {
+        console.log(JSON.parse(localStorage.getItem(storage_key)));
+      } catch (err) {
+        console.log("error");
+      }
+
+    localStorage.clear();
+    refs.email.value = "";
+    refs.text.value = "";
+}
+
 function reloadPage() {
     const savedMessage = JSON.parse(localStorage.getItem(storage_key));
     if (savedMessage) {
@@ -27,16 +48,4 @@ function reloadPage() {
     }
 }
 
-//при сабмите формы
-function onFormSubmit(evt) {
-    evt.preventDefault();
-        try {
-        console.log(JSON.parse(localStorage.getItem(storage_key)));
-      } catch (err) {
-        console.log("error");
-      }
-    evt.currentTarget.reset();
-    localStorage.removeItem(storage_key);
-    localStorage.clear();
-    formData = {};
-}
+reloadPage();

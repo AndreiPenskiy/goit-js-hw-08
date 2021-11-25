@@ -568,29 +568,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const refs = {
   form: document.querySelector('.feedback-form'),
-  input: document.querySelector('.feedback-form input'),
-  textarea: document.querySelector('.feedback-form textarea')
+  email: document.querySelector("input"),
+  text: document.querySelector("textarea")
 };
 const storage_key = 'feedback-form-state';
 const formData = {};
-reloadPage();
+refs.form.addEventListener('input', (0, _lodash.default)(formInput, 500));
 refs.form.addEventListener('submit', onFormSubmit);
-refs.form.addEventListener('input', (0, _lodash.default)(evt => {
-  formData[evt.target.name] = evt.target.value;
-  localStorage.setItem(storage_key, JSON.stringify(formData));
-}, 500)); //сохраняем данные в форме до сабмита
 
-function reloadPage() {
-  const savedMessage = JSON.parse(localStorage.getItem(storage_key));
+if (localStorage[storage_key]) {
+  const localData = JSON.parse(localStorage[storage_key]);
+  refs.email.value = localData.email;
+  refs.text.value = localData.text;
+}
 
-  if (savedMessage) {
-    refs.form.email.value = JSON.parse(localStorage.getItem(storage_key)).email, refs.form.message.value = JSON.parse(localStorage.getItem(storage_key)).message;
-  }
-} //при сабмите формы
+function formInput() {
+  const formData = new FormData(refs.form);
+  formData.forEach((value, name) => {
+    formData[name] = value;
+    localStorage.setItem(storage_key, JSON.stringify(formData));
+  });
+}
 
-
-function onFormSubmit(evt) {
-  evt.preventDefault();
+function onFormSubmit(event) {
+  event.preventDefault();
 
   try {
     console.log(JSON.parse(localStorage.getItem(storage_key)));
@@ -598,11 +599,20 @@ function onFormSubmit(evt) {
     console.log("error");
   }
 
-  evt.currentTarget.reset();
-  localStorage.removeItem(storage_key);
-  formData = {};
-  refs.form.removeEventListener('submit', onFormSubmit);
+  localStorage.clear();
+  refs.email.value = "";
+  refs.text.value = "";
 }
+
+function reloadPage() {
+  const savedMessage = JSON.parse(localStorage.getItem(storage_key));
+
+  if (savedMessage) {
+    refs.form.email.value = JSON.parse(localStorage.getItem(storage_key)).email, refs.form.message.value = JSON.parse(localStorage.getItem(storage_key)).message;
+  }
+}
+
+reloadPage();
 },{"lodash.throttle":"../node_modules/lodash.throttle/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -631,7 +641,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63146" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64432" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
