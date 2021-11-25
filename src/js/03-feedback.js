@@ -37,6 +37,6 @@ function onFormSubmit(evt) {
       }
     evt.currentTarget.reset();
     localStorage.removeItem(storage_key);
+    localStorage.clear();
     formData = {};
-    refs.form.removeEventListener('submit', onFormSubmit);
 }
